@@ -4,6 +4,7 @@ from sqlalchemy import create_engine, MetaData
 from config import db_url_object
 import psycopg2
 
+
 metadata = MetaData()
 Base = declarative_base()
 
