@@ -3,7 +3,7 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
 from config import comunity_token, access_token, db_url_object
 from core import VkTools
-from data_store import add_user
+from data_store import add_user, check_user
 from sqlalchemy import create_engine
 
 class BotInterface:
@@ -79,7 +79,7 @@ class BotInterface:
                         f'имя: {worksheet["name"]} ссылка: vk.com/{worksheet["id"]}',
                         attachment=photo_string
                     )
-                    if worksheet["id"]:
+                    if not check_user(engine, event.user_id, worksheet["id"]):
                         add_user(engine, event.user_id, worksheet["id"])
                 elif command == 'пока':
                     self.message_send(event.user_id, 'До новых встреч')
