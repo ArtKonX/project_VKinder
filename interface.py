@@ -36,9 +36,9 @@ class BotInterface:
                     self.message_send(event.user_id, 'Проверка данных...')
                     if not self.params['city']:
                         self.message_send(event.user_id, f"{self.params['name']}, введите ваш город")
-                        name = event.text.lower()
-                        self.message_send(event.user_id, name)
-                        self.params['city'] = name.capitalize()
+                        city = event.text.lower()
+                        self.message_send(event.user_id, city)
+                        self.params['city'] = city.capitalize()
                     elif self.params['city']:
                         self.message_send(event.user_id, f"{self.params['name']}, у Вас уже введён город")
                     if not self.params['bdate']:
