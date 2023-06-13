@@ -29,8 +29,6 @@ class BotInterface:
         for event in longpoll.listen():
             if event.type == VkEventType.MESSAGE_NEW and event.to_me:
                 command = event.text.lower()
-                name = event.text.lower()
-                bdate = event.text
                 if command == 'привет':
                     self.params = self.api.get_profile_info(event.user_id)
                     self.message_send(event.user_id, f'Здравствуй {self.params["name"]}')
@@ -38,12 +36,14 @@ class BotInterface:
                     self.message_send(event.user_id, 'Проверка данных...')
                     if not self.params['city']:
                         self.message_send(event.user_id, f"{self.params['name']}, введите ваш город")
+                        name = event.text.lower()
                         self.message_send(event.user_id, name)
                         self.params['city'] = name.capitalize()
                     elif self.params['city']:
                         self.message_send(event.user_id, f"{self.params['name']}, у Вас уже введён город")
                     if not self.params['bdate']:
                         self.message_send(event.user_id, f"{self.params['name']}, введите Вашу дату рождения")
+                        bdate = event.text
                         self.message_send(event.user_id, bdate)
                         self.params['bdate'] = bdate
                     elif self.params['bdate']:
