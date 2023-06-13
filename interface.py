@@ -29,25 +29,25 @@ class BotInterface:
         for event in longpoll.listen():
             if event.type == VkEventType.MESSAGE_NEW and event.to_me:
                 command = event.text.lower()
+                name = event.text.lower()
+                bdate = event.text
                 if command == 'привет':
                     self.params = self.api.get_profile_info(event.user_id)
                     self.message_send(event.user_id, f'Здравствуй {self.params["name"]}')
+                elif not self.params['city'] or not self.params['bdate']:
                     self.message_send(event.user_id, 'Проверка данных...')
-                    if not self.params['city'] or not self.params['bdate']:
-                        if not self.params['city']:
-                            self.message_send(event.user_id, f"{self.params['name']}, введите ваш город")
-                            self.message_send(event.user_id, command)
-                            self.params['city'] = command.capitalize()
-                        elif self.params['city']:
-                            self.message_send(event.user_id, f"{self.params['name']}, у Вас уже введён город")
-                        if not self.params['bdate']:
-                            self.message_send(event.user_id, f"{self.params['name']}, введите Вашу дату рождения")
-                            self.message_send(event.user_id, command)
-                            self.params['bdate'] = command
-                        elif self.params['bdate']:
-                            self.message_send(event.user_id, f"{self.params['name']}, у Вас уже введена дата рождения")
-                    else:
-                        self.message_send(event.user_id, f"{self.params['name']}, у Вас все данные!")
+                    if not self.params['city']:
+                        self.message_send(event.user_id, f"{self.params['name']}, введите ваш город")
+                        self.message_send(event.user_id, name)
+                        self.params['city'] = name.capitalize()
+                    elif self.params['city']:
+                        self.message_send(event.user_id, f"{self.params['name']}, у Вас уже введён город")
+                    if not self.params['bdate']:
+                        self.message_send(event.user_id, f"{self.params['name']}, введите Вашу дату рождения")
+                        self.message_send(event.user_id, bdate)
+                        self.params['bdate'] = bdate
+                    elif self.params['bdate']:
+                        self.message_send(event.user_id, f"{self.params['name']}, у Вас уже введена дата рождения")
                 elif command == 'поиск':
                     self.message_send(
                         event.user_id, 'Начинаем поиск')
