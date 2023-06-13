@@ -58,25 +58,30 @@ class VkTools:
         return result
 
     def get_photos(self, id):
+        photos = self.api.method('photos.get',
+                                 {'user_id': id,
+                                  'album_id': 'profile',
+                                  'extended': 1
+                                  }
+                                 )
         try:
-            photos = self.vkapi.method('photos.get',
-                                       {'owner_id': id,
-                                        'album_id': 'profile',
-                                        'extended': 1
-                                        }
-                                       )
-        except ApiError as error:
-            photos = {}
-            print(f'error = {error}')
+            photos = photos['items']
+        except KeyError:
+            return []
 
-        result = [{'owner_id': item['owner_id'],
-                   'id': item['id'],
-                   'likes': item['likes']['count'],
-                   'comments': item['comments']['count']
-                   } for item in photos['items']
-                  ]
-        '''сортировка п лайкам и комментам'''
-        return result[:3]
+        res = []
+
+        for photo in photos:
+            res.append({'owner_id': photo['owner_id'],
+                        'id': photo['id'],
+                        'likes': photo['likes']['count'],
+                        'comments': photo['comments']['count'],
+                        }
+                       )
+
+        res.sort(key=lambda x: x['likes'] + x['comments'] * 10, reverse=True)
+
+        return res
 
 
 if __name__ == '__main__':

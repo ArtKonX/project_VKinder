@@ -33,27 +33,19 @@ class BotInterface:
                     self.params = self.api.get_profile_info(event.user_id)
                     self.message_send(event.user_id, f'Здравствуй {self.params["name"]}')
                     self.message_send(event.user_id, 'Проверка данных...')
-                    if not self.params['city'] or not self.params['sex'] or not self.params['bdate'] or not self.params['relation']:
+                    if not self.params['city'] or not self.params['bdate']:
                         if not self.params['city']:
                             self.message_send(event.user_id, f"{self.params['name']}, введите ваш город")
+                            self.message_send(event.user_id, command)
                             self.params['city'] = command.capitalize()
                         elif self.params['city']:
                             self.message_send(event.user_id, f"{self.params['name']}, у Вас уже введён город")
-                        if not self.params['sex']:
-                            self.message_send(event.user_id, f"{self.params['name']}, введите Ваш пол")
-                            self.params['sex'] = int(command)
-                        elif self.params['sex']:
-                            self.message_send(event.user_id, f"{self.params['name']}, у Вас уже введён пол")
                         if not self.params['bdate']:
                             self.message_send(event.user_id, f"{self.params['name']}, введите Вашу дату рождения")
+                            self.message_send(event.user_id, command)
                             self.params['bdate'] = command
                         elif self.params['bdate']:
                             self.message_send(event.user_id, f"{self.params['name']}, у Вас уже введена дата рождения")
-                        if not self.params['relation']:
-                            self.message_send(event.user_id, f"{self.params['name']}, введите ваш город")
-                            self.params['relation'] = int(command)
-                        elif self.params['relation']:
-                            self.message_send(event.user_id, f"{self.params['name']}, у Вас уже введенно семейное положение")
                     else:
                         self.message_send(event.user_id, f"{self.params['name']}, у Вас все данные!")
                 elif command == 'поиск':
